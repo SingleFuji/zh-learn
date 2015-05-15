@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">  
+	  <layout class="org.apache.log4j.PatternLayout">  
+	   	<param name="ConversionPattern"  
+	    	value="%d - %c -%-4r [%t] %-5p %x - %m%n" />  
+  	  </layout>
+  	  <!--限制输出级别-->  
+	  <filter class="org.apache.log4j.varia.LevelRangeFilter">  
+		   <param name="LevelMax" value="ERROR"/>  
+		   <param name="LevelMin" value="TRACE"/>  
+	  </filter>  
+  	</appender>
+  	
+  	<!-- <appender name="FILE" class="org.apache.log4j.FileAppender">  
+	  <param name="File" value="logs/pbmanage4j.log"/>  
+	  <layout class="org.apache.log4j.PatternLayout">  
+	   <param name="ConversionPattern"  
+	    value="%d - %c -%-4r [%t] %-5p %x - %m%n" />  
+	  </layout>  
+	</appender> -->
+	
+	<appender name="DAILY_TRADE" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="logs/pbmanage4j-trade.log" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd_HH'.log'" />   
+        <layout class="org.apache.log4j.PatternLayout">
+         <param name="ConversionPattern"      
+            value="[%d{MMdd HH:mm:ss SSS\} %-5p] [%t] %c{3\} - %m%n" />     
+        </layout>       
+    </appender>
+  	
+  	<appender name="DAILY_CUSTOMER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="logs/pbmanage4j-customer.log" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd_HH'.log'" />   
+        <layout class="org.apache.log4j.PatternLayout">
+         <param name="ConversionPattern"      
+            value="[%d{MMdd HH:mm:ss SSS\} %-5p] [%t] %c{3\} - %m%n" />     
+        </layout>       
+    </appender>
+    
+  	<appender name="LOADBALANCING" class="com.xgd.flum.log4j.LoadBalancingLog4jAppender"> 
+        <param name="host" value="${f.xgd.log4j.host}" /> <!-- 日志上传地址 -->
+        <param name="unsafeMode" value="true" /> 
+        <param name="maxBackoff" value="5000000" /> 
+        <layout class="com.xgd.log4j.XgdRpcLayout" /> 
+    </appender>
+  	
+  	<appender name="ASYNC" class="org.apache.log4j.AsyncAppender"> 
+        <param name="BufferSize" value="10000" /> 
+        <param name="Blocking" value="false" /> 
+        <appender-ref ref="LOADBALANCING" />
+    </appender>
+
+    <logger name="com.apache.ibatis" additivity="true">
+    	<level value="TRACE" ></level>
+    </logger>
+	<logger name="org.springframework" additivity="true">
+		<level value="INFO"></level>
+	</logger>
+	<logger name="com.google" additivity="true">
+		<level value="INFO"></level>
+	</logger>
+	<logger name="org.apache"  additivity="true">
+		<level value="INFO"></level>
+	</logger>
+	<logger name="org.mortbay"  additivity="true">
+		<level value="INFO"></level>
+	</logger>
+	<logger name="org.mybatis"  additivity="true">
+		<level value="${f.log.level}"></level>
+	</logger>
+	<logger name="com.ibatis"  additivity="true">
+		<level value="${f.log.level}"></level>
+	</logger>
+	<logger name="java.sql"  additivity="true">
+		<level value="${f.log.level}"></level>
+	</logger>
+	<logger name="com.xgd.unifypay.framework.server.context"  additivity="true">
+		<level value="WARN"></level>
+	</logger>
+	<logger name="com.xgd.unifypay" additivity="true">
+		<level value="INFO"></level>
+	</logger>
+	<logger name="com.xinguodu.prepaidcard.cardcommon.dao"  additivity="true">
+		<level value="${f.log.level}"></level>
+	</logger>
+	<logger name="com.xinguodu.prepaidcard.base"  additivity="true">
+		<level value="INFO"></level>
+	</logger>
+	<logger name="com.xinguodu.prepaidcard.cardcommon.cache"  additivity="true">
+		<level value="INFO"></level>
+	</logger>
+	<logger name="org.quartz"  additivity="true">
+		<level value="INFO"></level>
+	</logger>
+	
+	<logger name="com.xinguodu.prepaidcard.customerserver" additivity="true">
+		<level value="INFO"></level>
+		<appender-ref ref="DAILY_CUSTOMER" />
+	</logger>
+		
+  	<root>  
+  		<priority value="${f.log.level}" />
+  		<appender-ref ref="CONSOLE" />
+  		<!-- <appender-ref ref="FILE" /> -->
+  		<appender-ref ref="DAILY_TRADE" />
+  		<!-- <appender-ref ref="LOADBALANCING" />
+        <appender-ref ref="ASYNC" />  -->
+    </root>
+</log4j:configuration> 

@@ -33,5 +33,10 @@ public class LogbackDemo {
 		
 		// 可以传入一个数组，结果为"Fruit:  apple,banana"
 		log.info("Fruit:  {},{}", fruits); 
+		
+		
+		StringBuffer sql = new StringBuffer();
+	    sql.append("select AUTOID,PAN,AMOUNT,TRADETIME, VOUCHERNO,TRADETYPE,STATUS,POSSEQNO,CLEARTIME,").append("REFNO,TERMNO,MERCHANTNO,BATCHNO,AUTHCODE,RTNCODE,TRADETYPECODE,REQMSGID,").append("RESMSGID,RESTRADETIME,RESCLEARTIME,RESREFNO,PROCESSCODE,CONCODE,CURRENCYCODE,ACCEPTORIDCODE,FWDINSTIDCODE,TRADETRANSTIME,ORGITRADETRANSTIME,ORGISEQNO,ORGIBATCHNO,ORGIREFNO,RESAMOUNT,").append("CREATOR,CREATETIME,OPERATOR,OPRTIME ").append(" from t_slsy_tradevoucher t where t.merchantno = ? and t.termno = ? ").append("and t.posseqno = ? and t.BATCHNO = ? and trunc(t.tradetime, 'dd') = trunc(sysdate, 'dd')");
+	    System.out.println(sql.toString());
 	}
 }
