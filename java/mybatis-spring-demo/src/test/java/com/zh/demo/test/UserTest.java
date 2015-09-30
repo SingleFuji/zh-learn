@@ -30,10 +30,17 @@ public class UserTest {
     @Test
     public void addUser(){
         User user = new User();
-        user.setId(2);
+        user.setId(1);
         user.setName("你好");
 //        user.setState(2);
         System.out.println(userService.insertUser(user));
+    }
+    
+    @Test
+    public void selectByID()
+    {
+    	User user = userService.selectByID(1);
+    	System.out.println(user.getName());
     }
 
 }
