@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+    "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--这块等于dao接口的实现 namespace必须和接口的类路径一样 -->
+<mapper namespace="com.zh.dao.BlogDao">
+	<resultMap type="com.zh.po.Blog" id="BasicMap">
+		<!-- colum 表类名 property 类属性 -->
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<id column="title" property="title" jdbcType="VARCHAR" />
+		<id column="content" property="content" jdbcType="VARCHAR" />
+		<id column="owner" property="owner" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="base_column_list">
+		id,
+		title,
+		content,
+		owner
+	</sql>
+	<select id="selectByID" resultMap="BasicMap">
+		select
+		<include refid="base_column_list" />
+		from t_blog
+		<where>
+			<if test="blogID != null"> id = #{blogID, jdbcType=INTEGER}</if>
+		</where>
+	</select>
+
+	<insert id="insertOneBlog" parameterType="Blog">
+		insert into t_blog
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="id != null">
+			id,
+		</if>
+		<if test="title != null">
+			title,
+		</if>
+		<if test="content != null">
+			content,
+		</if>
+		<if test="owner != null">
+			owner,
+		</if>
+		</trim>
+		
+		values
+		
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+		<if test="id != null">
+			#{id,jdbcType=INTEGER},
+		</if>
+		<if test="title != null">
+			#{title,jdbcType=VARCHAR},
+		</if>
+		<if test="content != null">
+			#{content,jdbcType=VARCHAR},
+		</if>
+		<if test="owner != null">
+			#{owner,jdbcType=VARCHAR},
+		</if>
+		</trim>
+	</insert>
+</mapper>
